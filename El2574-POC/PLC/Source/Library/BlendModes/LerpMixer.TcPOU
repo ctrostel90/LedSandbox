@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="LerpMixer" Id="{31edfc1a-ffa2-4e59-a3db-e24a2ada6655}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK LerpMixer Extends BaseBlender
+VAR
+	_Weight : LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Mix" Id="{0718dba6-d8fa-4635-803c-770017fc28c1}">
+      <Declaration><![CDATA[METHOD Mix
+VAR_INPUT
+	ImageBottomLayer : ITcVnImage;
+	ImageTopLayer	 : ITcVnImage;
+END_VAR
+VAR_INST
+	newWeight : LREAL;
+END_VAR
+VAR
+	bottomPixel, topPixel, newPixel : TcVnVector4_LREAL;
+	x, y							: UDINT;
+	
+	val								: HRESULT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT InputCheck(ImageBottomLayer, ImageTopLayer) THEN
+	RETURN;
+END_IF
+
+IF _Weight < 0 OR _Weight > 1 THEN
+	RETURN;
+END_IF
+
+FOR x := 0 TO ImageOneWidth - 1 DO
+	FOR y := 0 TO ImageOneHeight - 1 DO
+		F_VN_GetPixel(ipSrcImage := ImageBottomLayer,
+					  aValue	 := bottomPixel,
+					  nX		 := x,
+					  nY		 := y,
+					  hrPrev	 := s_OK);
+
+		F_VN_GetPixel(ipSrcImage := ImageTopLayer,
+					  aValue	 := topPixel,
+					  nX		 := x,
+					  nY		 := y,
+					  hrPrev	 := s_OK);
+		newWeight := topPixel[3] / 255.0;
+		newPixel[0] := (topPixel[0] * newWeight) + (bottomPixel[0] * (1.0 - newWeight));
+		newPixel[1] := (topPixel[1] * newWeight) + (bottomPixel[1] * (1.0 - newWeight));
+		newPixel[2] := (topPixel[2] * newWeight) + (bottomPixel[2] * (1.0 - newWeight));  
+		//newPixel[0] := ABS(bottomPixel[0] - topPixel[0]) * (newWeight) + bottomPixel[0];
+// 		newPixel[1] := ABS(bottomPixel[1] - topPixel[1]) * (newWeight) + bottomPixel[1];
+// 		newPixel[2] := ABS(bottomPixel[2] - topPixel[2]) * (newWeight) + bottomPixel[2];
+		newPixel[3] := 255;
+		//newPixel[3] := (bottomPixel[3] - topPixel[3]) * (_Weight) + topPixel[3];
+		val := F_VN_SetPixel(ipSrcImage := ImageBottomLayer,
+					  aValue	 := newPixel,
+					  nX		 := x,
+					  nY		 := y,
+					  hrPrev	 := s_OK);
+	END_FOR
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Weight" Id="{cfa0f83b-8fe3-4edd-bb7c-a4aacaed9910}">
+      <Declaration><![CDATA[// % interpolation between the two images
+PROPERTY Weight : LREAL ]]></Declaration>
+      <Get Name="Get" Id="{f8fa9ad4-0de3-48d7-8f71-35f6cbb54e8d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Weight := _Weight;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{965ff4b2-fbb5-4d08-a770-7c4948cc96e4}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Weight := Weight;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

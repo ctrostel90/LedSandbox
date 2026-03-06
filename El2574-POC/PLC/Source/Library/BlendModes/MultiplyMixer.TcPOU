@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MultiplyMixer" Id="{67ccc98a-e57b-42ba-bc92-7a8046b3655a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MultiplyMixer Extends BaseBlender
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Mix" Id="{7b194f0c-c135-4423-ac78-b56e17c3bcca}">
+      <Declaration><![CDATA[METHOD Mix
+VAR_INPUT
+	ImageBottomLayer : ITcVnImage;
+	ImageTopLayer	 : ITcVnImage;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT InputCheck(ImageBottomLayer, ImageTopLayer) THEN
+	RETURN;
+END_IF
+
+F_VN_MultiplyImages(ipSrcImage1 := ImageBottomLayer,
+					ipSrcImage2 := ImageTopLayer,
+					ipDestImage := ImageTopLayer,
+					hrPrev		:= s_OK);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

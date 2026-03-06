@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{1f58d179-ab14-432d-bc85-e201fba55584}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	Test			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\grayscale_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	Background		   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\rainbow_gradient.png', SpriteWidth := 1000, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	white			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\whitealpha3_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	shortred			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\shortred_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	MoveNext		   : BOOL;
+	MoveNext2		   : BOOL;
+	MoveBackground	   : BOOL;
+	displayImage	   : ITcVnDisplayableImage;
+	displayBackground  : ITcVnDisplayableImage;
+	displayMod1		   : ITcVnDisplayableImage;
+	displayMod2		   : ITcVnDisplayableImage;
+	Start			   : BOOL;
+	offset			   : UDINT;
+	offset2			   : UDINT;
+	backgroundOffset   : UDINT;
+	Modulator		   : Modulate;
+	ModulateBackground : Modulate;
+	Modulator2		   : Modulate;
+	MyScene			   : Scene;
+	RepeatNormal	   : RepeatUnwrap;
+	Extend			   : ExtendUnwrap;
+	val				   : HRESULT;
+	animate			   : UDINT;
+	rate			   : UDINT := 10;
+	rate2			   : UDINT := 15;
+	backgroundRate	   : UDINT := 8;
+	unwraptype		   : UDINT;
+	format			   : TcVnPixelFormat;
+
+	//BlendMode
+	lerp				: LerpMixer;
+	weight				: LREAL := 0.5;
+	reflect				: ReflectUnwrap;
+	width, height, x, y : UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT test.TryLoad() OR NOT white.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() THEN
+	RETURN;
+END_IF
+
+IF NOT Start THEN
+	Start						 := TRUE;
+	ModulateBackground.Unwrapper := reflect;
+	Modulator.Unwrapper			 := reflect;
+	Modulator2.Unwrapper		 := reflect;
+END_IF
+
+IF MoveNext THEN
+	Modulator.GetImage(shortred.CurrentFrameImage,
+					   32,
+					   1,
+					   64,
+					   1,
+					   offset,
+					   0);
+
+	MoveNext := FALSE;
+END_IF
+
+IF MoveNext2 THEN
+	Modulator2.GetImage(White.CurrentFrameImage,
+						32,
+						1,
+						64,
+						1,
+						offset2,
+						0);
+
+	MoveNext2 := FALSE;
+END_IF
+
+IF MoveBackGround THEN
+	ModulateBackground.GetImage(Source		 := Background.CurrentFrameImage,
+								SourceWidth	 := 1000,
+								SourceHeight := 1,
+								OutputWidth	 := 64,
+								OutputHeight := 1,
+								OffsetX		 := backgroundOffset,
+								OffsetY		 := 0);
+
+	MoveBackGround := FALSE;
+END_IF
+
+MyScene.Initalize(ModulateBackground.CurrentFrameImage);
+lerp.Weight := weight;
+MyScene.AddLayer(Modulator.CurrentFrameImage, lerp);
+MyScene.AddLayer(Modulator2.CurrentFrameImage, lerp);
+val		:= F_VN_CopyIntoDisplayableImage(MyScene.Image, displayImage, s_ok);
+val		:= F_VN_CopyIntoDisplayableImage(ModulateBackground.CurrentFrameImage, displayBackground, s_ok);
+val		:= F_VN_CopyIntoDisplayableImage(Modulator.CurrentFrameImage, displayMod1, s_ok);
+val		:= F_VN_CopyIntoDisplayableImage(Modulator2.CurrentFrameImage, displayMod2, s_ok);
+animate := animate + 1;
+IF animate MOD rate = 0 THEN
+	offset := offset + 1;
+	IF offset >= 64 THEN
+		offset := 0;
+	END_IF
+
+	MoveNext := TRUE;
+END_IF
+
+IF animate MOD rate2 = 0 THEN
+	offset2 := offset2 + 1;
+	IF offset2 >= 64 THEN
+		offset2 := 0;
+	END_IF
+
+	MoveNext2 := TRUE;
+END_IF
+
+IF animate MOD backgroundRate = 0 THEN
+	backgroundOffset := backgroundOffset + 1;
+	MoveBackground := TRUE;
+END_IF
+
+CASE unwraptype OF
+	0:
+		//Modulator.Unwrapper := RepeatNormal;
+
+	1:
+		Modulator.Unwrapper := Extend;
+
+	2:
+		reflect.Sample(width,
+							height,
+							x,
+							y);
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

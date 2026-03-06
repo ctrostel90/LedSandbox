@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Modulate" Id="{5350d40a-0c99-4bbb-83b2-ad11dbf9cb22}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Modulate
+VAR
+	_CurrentImage : ITcVnImage;
+	_unwrapper	  : I_Unwrapper;
+	value		  : HRESULT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="CurrentFrameImage" Id="{eea89cec-a60c-4fd9-a76b-4f0decd5b30b}">
+      <Declaration><![CDATA[PROPERTY PUBLIC CurrentFrameImage : ITcVnImage]]></Declaration>
+      <Get Name="Get" Id="{0204719f-9ecb-4743-89f7-7cfaee20f1de}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CurrentFrameImage := _CurrentImage;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="FB_Init" Id="{46693cb2-f04a-4e2d-b7c3-ec23a9b28894}">
+      <Declaration><![CDATA[//FB_Init is always available implicitly and it is used primarily for initialization.
+//The return value is not evaluated. For a specific influence, you can also declare the
+//methods explicitly and provide additional code there with the standard initialization
+//code. You can evaluate the return value.
+METHOD FB_Init: BOOL
+VAR_INPUT
+    bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[F_VN_CreateImage(_CurrentImage,
+				 64,
+				 1,
+				 ETcVnElementType.TCVN_ET_USINT,
+				 4,
+				 S_OK);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetImage" Id="{cd891bbb-ad5b-4475-91e7-4fc7008d9e4f}">
+      <Declaration><![CDATA[METHOD GetImage
+VAR_INPUT
+	Source					  : ITcVnImage;
+	SourceWidth, SourceHeight : UDINT;
+	OutputWidth, OutputHeight : UDINT;
+	OffsetX, Offsety		  : UDINT;
+END_VAR
+
+VAR
+	x, y			   : UDINT;
+	_SampleX, _SampleY : UDINT;
+	currentPixel	   : TcVnVector4_LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR y := 0 TO OutputHeight - 1 DO
+	FOR x := 0 TO OutputWidth - 1 DO
+		_unwrapper.Sample(ImageWidth  := SourceWidth,
+						  ImageHeight := SourceHeight,
+						  XOffset	  := x + OffsetX,
+						  YOffset	  := y + OffsetY);
+
+		IF SUCCEEDED(F_VN_GetPixel(ipSrcImage := Source,
+								   aValue	  := currentPixel,
+								   nX		  := _unwrapper.X,
+								   nY		  := _unwrapper.Y,
+								   hrPrev	  := s_OK)) THEN
+			value := F_VN_SetPixel(ipSrcImage := _CurrentImage,
+						  aValue	 := currentPixel,
+						  nX		 := x,
+						  nY		 := y,
+						  hrPrev	 := s_OK);
+		END_IF
+	END_FOR
+END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="Unwrapper" Id="{5bce6a1b-e709-4e68-b638-d83ded7800df}">
+      <Declaration><![CDATA[PROPERTY Unwrapper : I_Unwrapper]]></Declaration>
+      <Get Name="Get" Id="{69113d6b-e58a-473b-9cbb-19dfb376c683}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Unwrapper := _unwrapper;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{e11ff1bf-5847-4617-ba21-617cec436575}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_unwrapper := Unwrapper;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

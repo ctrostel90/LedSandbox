@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="ExtendUnwrap" Id="{bc3707c6-fcc6-4bc8-b2b0-6de6b06d61b1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ExtendUnwrap IMPLEMENTS I_Unwrapper
+VAR
+	_x : UDINT;
+	_y : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Sample" Id="{ba9870d3-46bf-4503-9de3-59e5319e4f41}">
+      <Declaration><![CDATA[METHOD Sample : BOOL
+VAR_INPUT
+	ImageWidth	: UDINT;
+	ImageHeight	: UDINT;
+	XOffset	: UDINT;
+	YOffset	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[_x	   := MIN(ImageWidth - 1, XOffset);
+_y	   := MIN(ImageHeight - 1, YOffset);
+Sample := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="X" Id="{72ce8925-d899-4f57-9f09-783a873a6368}">
+      <Declaration><![CDATA[PROPERTY X : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{bf15af2b-59bb-4ede-be82-28c68b757c66}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[X := _x;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="Y" Id="{3907860d-61ae-4620-8887-bc6893eb3b89}">
+      <Declaration><![CDATA[PROPERTY Y : UDINT
+]]></Declaration>
+      <Get Name="Get" Id="{5fcd8691-7577-4513-8984-4aa1f1408b21}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[Y := _y;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

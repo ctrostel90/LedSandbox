@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="BaseBlender" Id="{05282a65-f215-4393-8125-0e3bd52f97d2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT BaseBlender IMPLEMENTS I_ImageBlender
+VAR
+	ImageOneHeight, ImageOneWidth : UDINT;
+	ImageTwoHeight, ImageTwoWidth : UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="InputCheck" Id="{c51c8de8-c35b-4faf-af35-69ac2719d0d3}">
+      <Declaration><![CDATA[METHOD PROTECTED InputCheck : BOOL
+VAR_INPUT	
+	ImageOne	: ITcVnImage;
+	ImageTwo	: ITcVnImage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ImageOne = 0 OR ImageTwo = 0 THEN
+	RETURN;
+END_IF
+
+IF FAILED(ImageOne.GetHeight(imageOneHeight)) THEN
+	RETURN;
+END_IF;
+
+IF FAILED(ImageTwo.GetHeight(imageTwoHeight)) THEN
+	RETURN;
+END_IF;
+
+IF FAILED(ImageOne.GetWidth(ImageOneWidth)) THEN
+	RETURN;
+END_IF;
+
+IF FAILED(ImageTwo.GetWidth(ImageTwoWidth)) THEN
+	RETURN;
+END_IF;
+
+IF ImageOneHeight <> ImageTwoHeight THEN
+	RETURN;
+END_IF
+
+IF ImageOneWidth <> ImageTwoWidth THEN
+	RETURN;
+END_IF
+
+InputCheck := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Mix" Id="{617f2ece-1261-4635-bd8c-b7185a1a64bf}">
+      <Declaration><![CDATA[METHOD ABSTRACT Mix
+VAR_INPUT
+	ImageBottomLayer : ITcVnImage;
+	ImageTopLayer	 : ITcVnImage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

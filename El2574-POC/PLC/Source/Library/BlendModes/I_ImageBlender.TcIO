@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_ImageBlender" Id="{8eb2b565-bbbe-4fa3-b1c3-abe920cba2eb}">
+    <Declaration><![CDATA[INTERFACE I_ImageBlender
+]]></Declaration>
+    <Method Name="Mix" Id="{0784042c-e250-42ed-b9f4-2ea76e60a256}">
+      <Declaration><![CDATA[METHOD Mix
+VAR_INPUT
+	ImageBottomLayer : ITcVnImage;
+	ImageTopLayer	 : ITcVnImage;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>
