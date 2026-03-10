@@ -29,12 +29,13 @@ END_VAR
 METHOD FB_Init: BOOL
 VAR_INPUT
     bInitRetains: BOOL; // TRUE: the retain variables are initialized (reset warm / reset cold)
-    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)   
+    bInCopyCode: BOOL;  // TRUE: the instance will be copied to the copy code afterward (online change)
+    Width: UDINT;       // Output image buffer width — pass GVL.STRIP_LENGTH
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[F_VN_CreateImage(_CurrentImage,
-				 64,
+				 Width,
 				 1,
 				 ETcVnElementType.TCVN_ET_USINT,
 				 4,

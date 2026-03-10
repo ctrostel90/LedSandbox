@@ -12,10 +12,10 @@ VAR
 	white	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\whitealpha3_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 	shortred   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\shortred_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 
-	// --- Modulators (scroll/unwrap each source into a 64-pixel output) ---
-	ModulateBackground : Modulate;
-	ShortredModulator  : Modulate;
-	WhiteModulator	   : Modulate;
+	// --- Modulators (scroll/unwrap each source into a strip-length output) ---
+	ModulateBackground : Modulate(Width := GVL.STRIP_LENGTH);
+	ShortredModulator  : Modulate(Width := GVL.STRIP_LENGTH);
+	WhiteModulator	   : Modulate(Width := GVL.STRIP_LENGTH);
 	backgroundOffset   : UDINT;
 	shortredOffset	   : UDINT;
 	whiteOffset		   : UDINT;
@@ -49,7 +49,7 @@ VAR
 	AddBackground	: BOOL := TRUE;
 	BackgroundRate	: TON  := (PT := T#80MS);
 	AddShortedLayer : BOOL := TRUE;
-	ShortredRate	: TON  := (PT := T#50MS);
+	ShortredRate	: TON  := (PT := T#200MS);
 	AddWhiteLayer	: BOOL := TRUE;
 	WhiteRate		: TON  := (PT := T#150MS);
 	AddRedLayer		: BOOL := FALSE;
@@ -64,59 +64,37 @@ VAR
 	width, height, x, y : UDINT; // reflect.Sample inputs
 
 	// --- Hardware ---
-	LEDStrip   : MatrixImageSerializer(Height := 1, Width := 64, X := 0, Y := 0, FlipX := FALSE, FlipY := FALSE, Rotate := FALSE);
-	el2574_ch1 : EL2574_ExtendedMode(TotalPixels := 120);
+	LEDStrip   : MatrixImageSerializer(Height := 1, Width := GVL.STRIP_LENGTH, X := 0, Y := 0, FlipX := FALSE, FlipY := FALSE, Rotate := FALSE);
+	el2574_ch1 : EL2574_ExtendedMode(TotalPixels := GVL.STRIP_LENGTH);
 
 	// --- Misc ---
-	Initialized : BOOL;
 	val			: HRESULT;
 	format		: TcVnPixelFormat;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[_AppInfo.KeepOutputsOnBP := TRUE;
-// ============================================================
 
 // 1. LOAD GUARD — wait until all sprite sheets are ready
-
-// ============================================================
 IF NOT Black.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() OR NOT white.TryLoad() OR NOT Red.TryLoad() OR NOT Blue.TryLoad() OR NOT Green.TryLoad() THEN
 	RETURN;
 END_IF
 
-// ============================================================
-
-// 2. ONE-TIME INIT — assign unwrap mode to each modulator
-
-// ============================================================
-IF NOT Initialized THEN
-	Initialized					 := TRUE;
-	ModulateBackground.Unwrapper := reflect;
-	ShortredModulator.Unwrapper	 := reflect;
-	WhiteModulator.Unwrapper	 := reflect;
-END_IF
-
-// ============================================================
-
-// 3. ANIMATION TICK — advance offsets at each layer's own rate
-
-// ============================================================
+// 2. ANIMATION TICK — advance offsets at each layer's own rate
 ShortredRate(IN := NOT ShortredRate.Q AND Animate);
 IF ShortredRate.Q THEN
 	shortredOffset := shortredOffset + 1;
-	IF shortredOffset >= 64 THEN
+	IF shortredOffset >= 32 THEN
 		shortredOffset := 0;
 	END_IF
-
 	UpdateShortred := TRUE;
 END_IF
 
 WhiteRate(IN := NOT WhiteRate.Q AND Animate);
 IF WhiteRate.Q THEN
 	whiteOffset := whiteOffset + 1;
-	IF whiteOffset >= 64 THEN
+	IF whiteOffset >= 32 THEN
 		whiteOffset := 0;
 	END_IF
-
 	UpdateWhite := TRUE;
 END_IF
 
@@ -126,52 +104,57 @@ IF BackgroundRate.Q THEN
 	UpdateBackground := TRUE;
 END_IF
 
-// ============================================================
+// 3. UNWRAP MODE SELECT — override shortred/white unwrapper at runtime
+	ModulateBackground.Unwrapper := reflect;
+CASE unwraptype OF
+	0:
+		ShortredModulator.Unwrapper := RepeatNormal;
+		WhiteModulator.Unwrapper    := RepeatNormal;
+	1:
+		ShortredModulator.Unwrapper := reflect;
+		WhiteModulator.Unwrapper    := reflect;
+	2:
+		ShortredModulator.Unwrapper := Extend;
+		WhiteModulator.Unwrapper    := Extend;
+	3:
+		reflect.Sample(width, height, x, y);
+END_CASE
 
-// 4. MODULATE — scroll each source into a 64-pixel output frame
-
-// ============================================================
+// 4. MODULATE — scroll each source into a strip-length output frame
 IF UpdateBackground THEN
 	ModulateBackground.GetImage(Source		 := Background.CurrentFrameImage,
 								SourceWidth	 := 1000,
 								SourceHeight := 1,
-								OutputWidth	 := 120,
+								OutputWidth	 := GVL.STRIP_LENGTH,
 								OutputHeight := 1,
 								OffsetX		 := backgroundOffset,
 								OffsetY		 := 0);
-
 	UpdateBackground := FALSE;
 END_IF
 
 IF UpdateShortred THEN
 	ShortredModulator.GetImage(shortred.CurrentFrameImage,
 							   32,
-							   1, // source size
-							   120,
-							   1, // output size
+							   1,
+							   GVL.STRIP_LENGTH,
+							   1,
 							   shortredOffset,
 							   0);
-
 	UpdateShortred := FALSE;
 END_IF
 
 IF UpdateWhite THEN
 	WhiteModulator.GetImage(white.CurrentFrameImage,
 							32,
-							1, // source size
-							120,
-							1, // output size
+							1,
+							GVL.STRIP_LENGTH,
+							1,
 							whiteOffset,
 							0);
-
 	UpdateWhite := FALSE;
 END_IF
 
-// ============================================================
-
 // 5. COMPOSE SCENE — stack layers onto background with lerp blend
-
-// ============================================================
 IF NOT el2574_ch1.IsBusy THEN
 	IF AddBlackLayer THEN
 		MyScene.Initalize(Black.CurrentFrameImage);
@@ -205,39 +188,12 @@ IF NOT el2574_ch1.IsBusy THEN
 	LEDStrip.UpdateImage(MyScene.Image);
 	el2574_ch1.TrySendPixelsFromSerializer(LEDStrip);
 
-	// ============================================================
-
 	// 6. COPY TO DISPLAY — push images to HMI/scope handles
-
-	// ============================================================
 	val := F_VN_CopyIntoDisplayableImage(MyScene.Image, SceneImage, s_ok);
 	val := F_VN_CopyIntoDisplayableImage(ModulateBackground.CurrentFrameImage, displayBackground, s_ok);
 	val := F_VN_CopyIntoDisplayableImage(ShortredModulator.CurrentFrameImage, displayShortred, s_ok);
 	val := F_VN_CopyIntoDisplayableImage(WhiteModulator.CurrentFrameImage, displayWhite, s_ok);
 END_IF
-
-// ============================================================
-
-// 7. UNWRAP MODE SELECT — override unwrapper at runtime via unwraptype
-
-// ============================================================
-CASE unwraptype OF
-	0:
-		// reflect (set in init, no change needed)
-		ShortredModulator.Unwrapper := reflect;
-
-	1:
-		ShortredModulator.Unwrapper := RepeatNormal;
-
-	2:
-		ShortredModulator.Unwrapper := Extend;
-
-	3:
-		reflect.Sample(width,
-					   height,
-					   x,
-					   y);
-END_CASE
 
 el2574_ch1.CyclicCall();]]></ST>
     </Implementation>

@@ -20,8 +20,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[_x	   := XOffset MOD (ImageWidth - 1);
-_y	   := YOffset MOD (ImageHeight - 1);
+        <ST><![CDATA[_x	   := XOffset MOD ImageWidth;
+_y	   := YOffset MOD ImageHeight;
 Sample := TRUE;]]></ST>
       </Implementation>
     </Method>

@@ -18,6 +18,9 @@
     <LibraryReferences>{346ebbab-7644-4f2e-bb3c-3cd28f827fb4}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GVLs\GVL.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
