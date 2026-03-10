@@ -18,7 +18,9 @@ VAR
 	WhiteModulator	   : Modulate(Width := GVL.STRIP_LENGTH);
 	backgroundOffset   : UDINT;
 	shortredOffset	   : UDINT;
+	shortedRollOver	   : UDINT;
 	whiteOffset		   : UDINT;
+	whiteRollOver	   : UDINT;
 	redOffset		   : UDINT;
 	blueOffset		   : UDINT;
 	greenOffset		   : UDINT;
@@ -44,17 +46,18 @@ VAR
 	displayGreen	  : ITcVnDisplayableImage;
 
 	// --- Animation timing ---
-	Animate			: BOOL := TRUE;
-	AddBlackLayer	: BOOL := FALSE;
-	AddBackground	: BOOL := TRUE;
-	BackgroundRate	: TON  := (PT := T#80MS);
-	AddShortedLayer : BOOL := TRUE;
-	ShortredRate	: TON  := (PT := T#200MS);
-	AddWhiteLayer	: BOOL := TRUE;
-	WhiteRate		: TON  := (PT := T#150MS);
-	AddRedLayer		: BOOL := FALSE;
-	AddBlueLayer	: BOOL := FALSE;
-	AddGreenLayer	: BOOL := FALSE;
+	Animate			 : BOOL := TRUE;
+	AddBlackLayer	 : BOOL := FALSE;
+	AnimateBackgroud : BOOL := TRUE;
+	AddBackground	 : BOOL := TRUE;
+	BackgroundRate	 : TON	:= (PT := T#80MS);
+	AddShortedLayer	 : BOOL := TRUE;
+	ShortredRate	 : TON	:= (PT := T#200MS);
+	AddWhiteLayer	 : BOOL := TRUE;
+	WhiteRate		 : TON	:= (PT := T#150MS);
+	AddRedLayer		 : BOOL := FALSE;
+	AddBlueLayer	 : BOOL := FALSE;
+	AddGreenLayer	 : BOOL := FALSE;
 
 	// --- Unwrap modes ---
 	unwraptype			: UDINT;
@@ -68,12 +71,11 @@ VAR
 	el2574_ch1 : EL2574_ExtendedMode(TotalPixels := GVL.STRIP_LENGTH);
 
 	// --- Misc ---
-	val			: HRESULT;
-	format		: TcVnPixelFormat;
+	val	   : HRESULT;
+	format : TcVnPixelFormat;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[_AppInfo.KeepOutputsOnBP := TRUE;
-
 // 1. LOAD GUARD — wait until all sprite sheets are ready
 IF NOT Black.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() OR NOT white.TryLoad() OR NOT Red.TryLoad() OR NOT Blue.TryLoad() OR NOT Green.TryLoad() THEN
 	RETURN;
@@ -83,45 +85,52 @@ END_IF
 ShortredRate(IN := NOT ShortredRate.Q AND Animate);
 IF ShortredRate.Q THEN
 	shortredOffset := shortredOffset + 1;
-	IF shortredOffset >= 32 THEN
+	IF shortredOffset >= shortedRollOver THEN
 		shortredOffset := 0;
 	END_IF
+
 	UpdateShortred := TRUE;
 END_IF
 
 WhiteRate(IN := NOT WhiteRate.Q AND Animate);
 IF WhiteRate.Q THEN
 	whiteOffset := whiteOffset + 1;
-	IF whiteOffset >= 32 THEN
+	IF whiteOffset >= whiteRollOver THEN
 		whiteOffset := 0;
 	END_IF
+
 	UpdateWhite := TRUE;
 END_IF
 
-BackgroundRate(IN := NOT BackgroundRate.Q AND Animate);
+BackgroundRate(IN := NOT BackgroundRate.Q AND Animate AND AnimateBackgroud);
 IF BackgroundRate.Q THEN
 	backgroundOffset := backgroundOffset + 1;
 	UpdateBackground := TRUE;
 END_IF
 
 // 3. UNWRAP MODE SELECT — override shortred/white unwrapper at runtime
-	ModulateBackground.Unwrapper := reflect;
+ModulateBackground.Unwrapper := reflect;
 CASE unwraptype OF
 	0:
+		shortedRollOver				:= 32;
+		whiteRollOver				:= 32;
 		ShortredModulator.Unwrapper := RepeatNormal;
-		WhiteModulator.Unwrapper    := RepeatNormal;
+		WhiteModulator.Unwrapper	:= RepeatNormal;
+
 	1:
+		shortedRollOver				:= GVL.STRIP_LENGTH;
+		whiteRollOver				:= GVL.STRIP_LENGTH;
 		ShortredModulator.Unwrapper := reflect;
-		WhiteModulator.Unwrapper    := reflect;
+		WhiteModulator.Unwrapper	:= reflect;
+
 	2:
 		ShortredModulator.Unwrapper := Extend;
-		WhiteModulator.Unwrapper    := Extend;
-	3:
-		reflect.Sample(width, height, x, y);
+		WhiteModulator.Unwrapper	:= Extend;
+
 END_CASE
 
 // 4. MODULATE — scroll each source into a strip-length output frame
-IF UpdateBackground THEN
+IF UpdateBackground OR NOT AnimateBackgroud THEN
 	ModulateBackground.GetImage(Source		 := Background.CurrentFrameImage,
 								SourceWidth	 := 1000,
 								SourceHeight := 1,
@@ -129,6 +138,7 @@ IF UpdateBackground THEN
 								OutputHeight := 1,
 								OffsetX		 := backgroundOffset,
 								OffsetY		 := 0);
+
 	UpdateBackground := FALSE;
 END_IF
 
@@ -140,6 +150,7 @@ IF UpdateShortred THEN
 							   1,
 							   shortredOffset,
 							   0);
+
 	UpdateShortred := FALSE;
 END_IF
 
@@ -151,6 +162,7 @@ IF UpdateWhite THEN
 							1,
 							whiteOffset,
 							0);
+
 	UpdateWhite := FALSE;
 END_IF
 
@@ -165,12 +177,13 @@ IF NOT el2574_ch1.IsBusy THEN
 	END_IF
 
 	lerp.Weight := weight;
-	IF AddShortedLayer THEN
-		MyScene.AddLayer(ShortredModulator.CurrentFrameImage, lerp);
-	END_IF
-
+	
 	IF AddWhiteLayer THEN
 		MyScene.AddLayer(WhiteModulator.CurrentFrameImage, lerp);
+	END_IF
+	
+	IF AddShortedLayer THEN
+		MyScene.AddLayer(ShortredModulator.CurrentFrameImage, lerp);
 	END_IF
 
 	IF AddRedLayer THEN
