@@ -11,11 +11,32 @@
 					<OTCID>#x02010030</OTCID>
 				</ManualConfig>
 				<Priority>20</Priority>
-				<CycleTime>10000000</CycleTime>
+				<CycleTime>1000000</CycleTime>
 			</Context>
 		</Contexts>
 		<TaskPouOids>
 			<TaskPouOid Prio="20" OTCID="#x08502001"/>
 		</TaskPouOids>
 	</Instance>
+	<Mappings>
+		<OwnerA>
+			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1200)^Term 3 (EL2574)">
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^Busy" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Busy"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^CommandAck" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Command Acknowledge"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^CommandReject" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Command Reject"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^Error" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Error"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^InputCycleCounter" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Input Cycle Counter" Size="2"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^SendAck" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Send Acknowledge"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^Transmit" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Transmit"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^UpdateAck" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Update Acknowledge"/>
+				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^Warning" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Warning"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Execute" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Execute"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Index" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Index"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Segment" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Segment"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Send" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Send"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Update" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Update"/>
+				<Link VarA="PlcTask Outputs^MAIN.el2574_ch1.pdo.Out^Write" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Write"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
 </TcSmItem>

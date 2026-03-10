@@ -13,8 +13,9 @@ VAR
 	readImage			: FB_VN_ReadImage;
 
 	// animation variables
-	_currentFrameIndex : UDINT;
-	_currentFrameImage : ITcVnImage;
+	_currentFrameIndex	 : UDINT;
+	_currentFrameImage	 : ITcVnImage;
+	_LoadedImageFromDisk : ITcVnDisplayableImage;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -163,6 +164,9 @@ END_IF
 IF spriteSheetImage = 0 THEN
 	RETURN;
 END_IF
+
+F_VN_CopyIntoDisplayableImage(ipSrcImage:=spriteSheetImage,ipDestImage:=_LoadedImageFromDisk,hrPrev:=S_OK);
+
 // we have made it this far, which means we need to set the CurrentFrameImage to the first part of the image and report as done. 
 MoveToStart();
 TryLoad := TRUE;]]></ST>

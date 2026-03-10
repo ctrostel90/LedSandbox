@@ -16,12 +16,49 @@
     <Implicit_KindOfTask>{ac57c907-0d18-4dab-baea-4bf8a41cfd3e}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{51aa9db4-3232-423d-9cb5-022a551a9525}</Implicit_Jitter_Distribution>
     <LibraryReferences>{346ebbab-7644-4f2e-bb3c-3cd28f827fb4}</LibraryReferences>
+    <CompilerDefines>VISU_USEPROPERTYINFO</CompilerDefines>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GlobalTextList.TcGTLO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\debug\CheckBounds.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_ExtendedMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_In.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_Out.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\EL2574_ExtendedMode.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\I_EL2574_CommandMode.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Base\ImageSerializer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Interfaces\I_ImageSerializer.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Matrix\MatrixImageSerializer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Null\NullImageSerializer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Source\Library\Animation\I_Animation.TcIO">
@@ -48,6 +85,15 @@
     <Compile Include="Source\Library\Scene\Scene.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\PixelReader\EL2574PixelReader.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\PixelReader\I_PixelReader.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ST_Colors.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\Unwrappers\I_Unwrapper.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -60,20 +106,85 @@
     <Compile Include="Source\Unwrappers\ReflectUnwrap.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\U_Pixel.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Visualization Manager.TcVMO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VISUs\UC_Slider.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\Visualization.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="Source\EL2574" />
+    <Folder Include="Source\EL2574\DUT" />
+    <Folder Include="Source\ImageSerializer" />
+    <Folder Include="Source\ImageSerializer\Base" />
+    <Folder Include="Source\ImageSerializer\Interfaces" />
+    <Folder Include="Source\ImageSerializer\Matrix" />
+    <Folder Include="Source\ImageSerializer\Null" />
     <Folder Include="Source\Library" />
     <Folder Include="Source\Library\Animation" />
     <Folder Include="Source\Library\BlendModes" />
     <Folder Include="Source\Library\Scene" />
+    <Folder Include="Source\debug" />
+    <Folder Include="Source\PixelReader" />
     <Folder Include="Source\Unwrappers" />
     <Folder Include="VISUs" />
     <Folder Include="Source" />
     <Folder Include="_CompileInfo" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="System_VisuElemMeter">
+      <DefaultResolution>VisuElemMeter, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemMeter</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElems">
+      <DefaultResolution>VisuElems, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElems</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemsSpecialControls">
+      <DefaultResolution>VisuElemsSpecialControls, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemsSpecialControls</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemsWinControls">
+      <DefaultResolution>VisuElemsWinControls, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemsWinControls</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuElemTextEditor">
+      <DefaultResolution>VisuElemTextEditor, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuElemTextEditor</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuInputs">
+      <DefaultResolution>VisuInputs, 4.7.0.0 (System)</DefaultResolution>
+      <Namespace>VisuInputs</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="System_VisuNativeControl">
+      <DefaultResolution>VisuNativeControl, 4.8.0.0 (System)</DefaultResolution>
+      <Namespace>VisuNativeControl</Namespace>
+      <SystemLibrary>true</SystemLibrary>
+      <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -90,6 +201,10 @@
     <PlaceholderReference Include="Tc3_Vision">
       <DefaultResolution>Tc3_Vision, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Vision</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="VisuSymbols">
+      <DefaultResolution>VisuSymbols, 4.5.0.0 (System)</DefaultResolution>
+      <Namespace>VisuSymbols</Namespace>
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
@@ -114,7 +229,12 @@
         <o>
           <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
           <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
+            <v>GeneralPropertySupport</v>
+            <v>True</v>
+            <v>UnicodeStrings</v>
+            <v>False</v>
+          </d>
         </o>
         <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
         <o>

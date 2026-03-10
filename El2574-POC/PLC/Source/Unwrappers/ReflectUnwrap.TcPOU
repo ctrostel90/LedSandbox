@@ -26,12 +26,12 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[even := TRUNC((XOffset) / (ImageWidth)) MOD 2;
 IF even = 0 THEN
-	_x := XOffset - (TRUNC(XOffset / ImageWidth) * ImageWidth);
+	_x := XOffset MOD ImageWidth;
 ELSIF even = 1 THEN
-	_x := ImageWidth - (XOffset - (TRUNC(XOffset / ImageWidth) * ImageWidth));
+	_x := ImageWidth - 1 - (XOffset MOD ImageWidth);
 END_IF
 
-_y	   := YOffset MOD (ImageHeight - 1);
+_y	   := YOffset MOD ImageHeight;
 Sample := TRUE;]]></ST>
       </Implementation>
     </Method>

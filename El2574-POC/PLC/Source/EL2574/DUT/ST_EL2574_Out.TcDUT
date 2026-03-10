@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EL2574_Out" Id="{38f62bde-6ad8-4d92-9b88-0add9d2d39e1}">
+    <Declaration><![CDATA[TYPE ST_EL2574_Out :
+	STRUCT
+		Execute : BIT;
+		Send	: BIT;
+		Update	: BIT;
+		Write	: BIT;
+		Index	: USINT;
+		Segment : ARRAY[0..7] OF UDINT;
+	END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

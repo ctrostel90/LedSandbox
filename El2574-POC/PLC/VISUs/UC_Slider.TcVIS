@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Visu Name="UC_Slider" Id="{eda1783a-037a-44ee-89b4-e851fcff7e76}">
+    <XmlArchive>
+      <Data>
+        <o xml:space="preserve" t="VisualObject">
+          <n n="LastVisuLanguageModelEntry" />
+          <v n="UniqueIdGenerator">"111"</v>
+          <o n="VisualElemList" t="VisualElemList">
+            <l n="VisualElementList" t="VisualElemCollection" cet="GenericVisualElem">
+              <o>
+                <a n="ConfiguredComplexInputs" et="ComplexInput" />
+                <l n="Elements" t="ArrayList" />
+                <n n="VisualElementDescription" />
+                <o n="VisualElemMemberList" t="VisualElemMemberList">
+                  <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
+                    <o>
+                      <v n="Id">571893170L</v>
+                      <v n="Value">""</v>
+                    </o>
+                    <o>
+                      <v n="Id">1404881523L</v>
+                      <o n="Value" t="ConstantWithOptionalExpression">
+                        <v n="UsingType">1</v>
+                        <v n="Constant" t="Single">0</v>
+                        <v n="Expression">"Start"</v>
+                      </o>
+                    </o>
+                    <o>
+                      <v n="Id">3837067714L</v>
+                      <o n="Value" t="ConstantWithOptionalExpression">
+                        <v n="UsingType">1</v>
+                        <v n="Constant" t="Single">1000</v>
+                        <v n="Expression">"End"</v>
+                      </o>
+                    </o>
+                    <o>
+                      <v n="Id">2867424708L</v>
+                      <o n="Value" t="ConstantWithOptionalExpression">
+                        <v n="UsingType">1</v>
+                        <v n="Constant" t="Single">1</v>
+                        <v n="Expression">""</v>
+                      </o>
+                    </o>
+                    <o>
+                      <v n="Id">440407611L</v>
+                      <v n="Value" t="Single">5</v>
+                    </o>
+                    <o>
+                      <v n="Id">2608923542L</v>
+                      <v n="Value" t="Int16">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">469634675L</v>
+                      <v n="Value">"BOTTOM"</v>
+                    </o>
+                    <o>
+                      <v n="Id">1274183999L</v>
+                      <v n="Value">"RIGHT"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2640826223L</v>
+                      <v n="Value">"HORIZONTAL"</v>
+                    </o>
+                    <o>
+                      <v n="Id">3675497837L</v>
+                      <v n="Value">"LEFT_RIGHT"</v>
+                    </o>
+                    <o>
+                      <v n="Id">3841252171L</v>
+                      <v n="Value">"TOP_DOWN"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2812299069L</v>
+                      <v n="Value">4294967295U</v>
+                    </o>
+                    <o>
+                      <v n="Id">494569607L</v>
+                      <v n="Value">4278190080U</v>
+                    </o>
+                    <o>
+                      <v n="Id">3719097617L</v>
+                      <v n="Value">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">1649127785L</v>
+                      <v n="Value">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">357335551L</v>
+                      <v n="Value">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">2422045748L</v>
+                      <v n="Value">150</v>
+                    </o>
+                    <o>
+                      <v n="Id">2134141914L</v>
+                      <v n="Value">30</v>
+                    </o>
+                    <o>
+                      <v n="Id">2985826283L</v>
+                      <v n="Value">"%i"</v>
+                    </o>
+                    <o>
+                      <v n="Id">493260384L</v>
+                      <v n="Value">4294967295U</v>
+                    </o>
+                    <o>
+                      <v n="Id">135947015L</v>
+                      <v n="Value">4278190080U</v>
+                    </o>
+                    <o>
+                      <v n="Id">2678395525L</v>
+                      <v n="Value">1U</v>
+                    </o>
+                    <o>
+                      <v n="Id">2340015797L</v>
+                      <v n="Value">"HCENTER"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2565699834L</v>
+                      <v n="Value">"VCENTER"</v>
+                    </o>
+                    <o>
+                      <v n="Id">390574330L</v>
+                      <v n="Value">""</v>
+                    </o>
+                    <o>
+                      <v n="Id">2597686782L</v>
+                      <v n="Value">false</v>
+                    </o>
+                    <o>
+                      <v n="Id">397264524L</v>
+                      <v n="Value">"PT"</v>
+                    </o>
+                  </l>
+                </o>
+                <v n="VisualElementName">"Slider"</v>
+                <v n="VisualElementTypeName">"VisuFbElemSlider"</v>
+                <v n="VisualElementIsRectangle">true</v>
+                <v n="VisualElementIdentifier">"GenElemInst_1"</v>
+                <n n="VisualElementOfflinePaintCommands" />
+                <n n="VisualElementFrameInformation" />
+                <d n="VisualElementInputActions" t="Hashtable" />
+                <v n="VisualElementIdentification">{81200ecb-8799-4525-b3e6-f9adf409da3d}</v>
+                <v n="VisualElementOwningObjectGuid">{eda1783a-037a-44ee-89b4-e851fcff7e76}</v>
+                <a n="LMGuids" et="Guid" />
+                <d n="SubElements" t="Hashtable" />
+                <v n="VisualElementId">1</v>
+                <l n="UserManagementAccessRights" t="ArrayList" />
+                <v n="AnimationDuration">"0"</v>
+                <v n="BringToForeground">""</v>
+                <v n="ElementVersion" t="Byte">1</v>
+                <n n="TabOrder" />
+              </o>
+              <o>
+                <a n="ConfiguredComplexInputs" et="ComplexInput" />
+                <l n="Elements" t="ArrayList" />
+                <n n="VisualElementDescription" />
+                <o n="VisualElemMemberList" t="VisualElemMemberList">
+                  <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
+                    <o>
+                      <v n="Id">571893170L</v>
+                      <v n="Value">""</v>
+                    </o>
+                    <o>
+                      <v n="Id">494569607L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleColor">
+                        <o>
+                          <v n="Color">-3355444</v>
+                          <v n="CanonicalName">"Element-Frame-Color"</v>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">2812299069L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleColor">
+                        <o>
+                          <v n="Color">-1</v>
+                          <v n="CanonicalName">"Element-Fill-Color"</v>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">135947015L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleColor">
+                        <o>
+                          <v n="Color">-65536</v>
+                          <v n="CanonicalName">"Element-Alarm-Frame-Color"</v>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">493260384L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleColor">
+                        <o>
+                          <v n="Color">-12337</v>
+                          <v n="CanonicalName">"Element-Alarm-Fill-Color"</v>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">2340015797L</v>
+                      <v n="Value">"HCENTER"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2565699834L</v>
+                      <v n="Value">"VCENTER"</v>
+                    </o>
+                    <o>
+                      <v n="Id">4134387352L</v>
+                      <v n="Value">"NONE"</v>
+                    </o>
+                    <o>
+                      <v n="Id">1603690730L</v>
+                      <v n="Value">"Arial"</v>
+                    </o>
+                    <o>
+                      <v n="Id">4253639993L</v>
+                      <v n="Value" t="Int16">12</v>
+                    </o>
+                    <o>
+                      <v n="Id">2729990903L</v>
+                      <v n="Value">0U</v>
+                    </o>
+                    <o>
+                      <v n="Id">1213979116L</v>
+                      <v n="Value">0U</v>
+                    </o>
+                    <o>
+                      <v n="Id">3488306084L</v>
+                      <v n="Value">4278190080U</v>
+                    </o>
+                    <o>
+                      <v n="Id">663104332L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleColor">
+                        <o>
+                          <v n="Color">-11711155</v>
+                          <v n="CanonicalName">"Font-Default-Color"</v>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">1999528970L</v>
+                      <v n="Value">"&lt;toggle/tap variable&gt;"</v>
+                    </o>
+                    <o>
+                      <v n="Id">3719097617L</v>
+                      <v n="Value">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">1649127785L</v>
+                      <v n="Value">0</v>
+                    </o>
+                    <o>
+                      <v n="Id">357335551L</v>
+                      <v n="Value">30</v>
+                    </o>
+                    <o>
+                      <v n="Id">2422045748L</v>
+                      <v n="Value">150</v>
+                    </o>
+                    <o>
+                      <v n="Id">2134141914L</v>
+                      <v n="Value">30</v>
+                    </o>
+                    <o>
+                      <v n="Id">3729828405L</v>
+                      <l n="Value" t="ArrayList" cet="NamedStyleFont">
+                        <o>
+                          <v n="FontStyle">0</v>
+                          <v n="AdditionalFontStyle" t="UInt16">0</v>
+                          <v n="ExplicitColor">-16777216</v>
+                          <v n="CanonicalName">"Font-Standard"</v>
+                          <v n="FontName">"Arial"</v>
+                          <v n="DisplayName">""</v>
+                          <v n="FontSize">12</v>
+                          <v n="ScriptIdentification">0</v>
+                          <v n="DoubleFontSize" t="Double">0</v>
+                          <o n="NamedColor" t="NamedStyleColor">
+                            <v n="Color">-16777216</v>
+                            <v n="CanonicalName">"Font-Default-Color"</v>
+                          </o>
+                        </o>
+                      </l>
+                    </o>
+                    <o>
+                      <v n="Id">1337389588L</v>
+                      <v n="Value">"FROM_STYLE"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2678395525L</v>
+                      <v n="Value">1U</v>
+                    </o>
+                    <o>
+                      <v n="Id">390574330L</v>
+                      <v n="Value">"%s"</v>
+                    </o>
+                    <o>
+                      <v n="Id">2597686782L</v>
+                      <v n="Value">false</v>
+                    </o>
+                    <o>
+                      <v n="Id">2477733581L</v>
+                      <v n="Value">"Label"</v>
+                    </o>
+                    <o>
+                      <v n="Id">823443203L</v>
+                      <v n="Value">"59"</v>
+                    </o>
+                  </l>
+                </o>
+                <v n="VisualElementName">"Textfield"</v>
+                <v n="VisualElementTypeName">"VisuFbElemTextfield"</v>
+                <v n="VisualElementIsRectangle">true</v>
+                <v n="VisualElementIdentifier">"GenElemInst_2"</v>
+                <n n="VisualElementOfflinePaintCommands" />
+                <n n="VisualElementFrameInformation" />
+                <d n="VisualElementInputActions" t="Hashtable" />
+                <v n="VisualElementIdentification">{cfe7e833-1857-4939-a81b-8358cc339abd}</v>
+                <v n="VisualElementOwningObjectGuid">{eda1783a-037a-44ee-89b4-e851fcff7e76}</v>
+                <a n="LMGuids" et="Guid" />
+                <d n="SubElements" t="Hashtable" />
+                <v n="VisualElementId">3</v>
+                <l n="UserManagementAccessRights" t="ArrayList" />
+                <v n="AnimationDuration">"0"</v>
+                <v n="BringToForeground">""</v>
+                <v n="ElementVersion" t="Byte">1</v>
+                <n n="TabOrder" />
+              </o>
+            </l>
+            <v n="BackgroundBitmapId">""</v>
+            <v n="BackgroundColor">16777215</v>
+            <o n="Background" t="BackgroundSettings">
+              <n n="BgGradient" />
+              <n n="BgNamedColor" />
+              <v n="BgBmpId">""</v>
+              <v n="BgUseBmp">false</v>
+              <v n="BgColor">false</v>
+              <v n="BgUseColor">16777215</v>
+              <v n="BgUseGradient">false</v>
+            </o>
+            <v n="AllElementsHaveDynamicVisibility">false</v>
+          </o>
+          <o n="GeneratedLMMDescriptions" t="GeneratedLanguageModelEntriesData">
+            <o n="GeneratedVisuFbDescription" t="GenericFbDescription">
+              <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
+                <v>AreAllElementsHidden</v>
+                <v>e8753fb3-e089-5f76-80b6-545b4dd42e08</v>
+                <v>ContainsPoint</v>
+                <v>3d4e71ea-869c-4724-a272-dd100303db2c</v>
+                <v>Destruct</v>
+                <v>fe033b49-b7a3-4f94-b59d-0ebbb40229a4</v>
+                <v>ElementInfo</v>
+                <v>b7de4610-19b7-425d-9e5e-edb98eebd8c7</v>
+                <v>FB_Exit</v>
+                <v>296153fb-e770-4b4a-9d21-b9d7bd176798</v>
+                <v>FB_Reinit</v>
+                <v>a0210173-f92b-438a-b7a7-a68a670ee966</v>
+                <v>GetCallerNamespace</v>
+                <v>20ee223f-c839-51aa-89ef-fc45036a8a9e</v>
+                <v>GetClientData</v>
+                <v>68dfa33b-6aeb-4300-a2f0-991d278b9e4d</v>
+                <v>GetDialogInterface</v>
+                <v>bcb18be3-e1ae-40a3-9b67-1b2f16fc33ce</v>
+                <v>GetDialogInterfaceSize</v>
+                <v>77b6a9b4-f590-43f1-941a-ca4a388fe7bf</v>
+                <v>GetElementArray</v>
+                <v>520d192b-d1df-4dab-a796-a76a6fdd16cf</v>
+                <v>GetElementIdArray</v>
+                <v>a7fed04c-c235-48d2-844f-daf83a8e4efc</v>
+                <v>GetElementName</v>
+                <v>0deefdbf-d9a5-5190-b829-e54c884338b8</v>
+                <v>GetInitializeVersion</v>
+                <v>9fc46708-5cf8-49bc-8f70-c56fab9d0ec7</v>
+                <v>GetInstance</v>
+                <v>f53d9761-b377-4721-b49c-be787f180d17</v>
+                <v>GetLocalUsergroup</v>
+                <v>92dbcb6e-b6aa-4e04-9e6b-f2cb4c834f02</v>
+                <v>GetName</v>
+                <v>a98a66a3-2df6-4e17-91c6-dd5f3187cefb</v>
+                <v>GetNamespace</v>
+                <v>c5930e5e-14d3-42f0-98f9-e716e1936970</v>
+                <v>GetResult</v>
+                <v>e7a87533-f50f-48de-82b0-51d66d826516</v>
+                <v>GetSize</v>
+                <v>cb0afb90-3717-49a1-b3be-741e80f5fc1b</v>
+                <v>GetSurroundingRect</v>
+                <v>6264cddc-14fd-4ea8-8e53-30ac50a02a79</v>
+                <v>GetTabOrderIdArray</v>
+                <v>35984a07-4a0a-590c-809c-585ce3208160</v>
+                <v>GetText</v>
+                <v>c6560945-c944-4864-a195-e6c6a0984038</v>
+                <v>GetTextProperties</v>
+                <v>6ae71340-b325-4ff2-b4f4-82e450c16bbd</v>
+                <v>GetTooltip</v>
+                <v>f17fbbe6-5d58-4c6b-97b9-ee6fa5677951</v>
+                <v>GetTranslator</v>
+                <v>a70ec9f1-1cae-41be-9385-5a241d8e0438</v>
+                <v>GetUpdateRects</v>
+                <v>57e80e68-0828-4da7-9c8c-432c8c774410</v>
+                <v>HandleInput</v>
+                <v>0b4c42e2-4643-4487-adfe-ff3ece53f3b7</v>
+                <v>HasInputAccess</v>
+                <v>bc40d8a1-05ac-4a7c-8913-91098015decc</v>
+                <v>HasInputAccessIntern</v>
+                <v>2fbb6971-da07-5d4a-8431-95acaf590bb1</v>
+                <v>HasVisibilityAccess</v>
+                <v>23880b33-a088-4438-8161-a64fe4e8d121</v>
+                <v>HasVisibilityAccessIntern</v>
+                <v>0143f2da-6a97-5dda-ab9c-30e5cbdae176</v>
+                <v>Initialize</v>
+                <v>182d9289-b116-45ab-8eb7-12285076f807</v>
+                <v>IsAntialiasingInactive</v>
+                <v>299e3831-e37b-484a-9410-46174d96a44e</v>
+                <v>Paint</v>
+                <v>01901597-bbaa-4963-b6c0-de24dd2c7693</v>
+                <v>SetClientData</v>
+                <v>64bb16d6-8cb4-4b83-a5ee-c4c583b68ac1</v>
+                <v>SetContainerSize</v>
+                <v>6a999d0b-1abf-58c4-a660-5d56022e0a96</v>
+                <v>SetDialogInterface</v>
+                <v>8ec6560a-4b32-44da-aecc-5c11e6972eed</v>
+                <v>SetResult</v>
+                <v>5c2d8a60-29b8-4cf9-9820-776fec425c02</v>
+                <v>SetStaticState</v>
+                <v>aa4fe87b-ede5-44b3-af8a-1d4fdd910dc2</v>
+                <v>SetVisuFlagsInternal</v>
+                <v>f74cff12-8aec-4ae8-873c-51161edd852c</v>
+                <v>Update</v>
+                <v>9bd855fd-9904-40aa-9261-2563c1a99739</v>
+              </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
+                <v>__getContainer</v>
+                <v>0c9d0d5d-c42c-44a7-9707-55426c3b0883</v>
+                <v>__getVisu</v>
+                <v>6ba92dd5-833e-468d-b888-f2d306cab94d</v>
+              </d>
+              <v n="FbName">"NotImportant"</v>
+              <v n="FbGuid">{eda1783a-037a-44ee-89b4-e851fcff7e76}</v>
+            </o>
+            <v n="GeneratedGlobalVisuVarsGuid">{6ed5b8ef-e742-4610-9516-d8996eac0113}</v>
+            <v n="GeneratedGlobalTheVisuVarlistGuid">{a67522b9-83fa-43dd-999f-3856f93d4ec1}</v>
+            <v n="GeneratedGlobalVisuConstants">{99b3d301-d4f0-4d99-a52f-9f8211f3be2b}</v>
+            <d n="GeneratedAllElementsEntries" t="Hashtable" />
+            <o n="VisuRegDesc" t="GenericFbDescription">
+              <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
+                <v>FB_Exit</v>
+                <v>9f973092-ed4f-423f-8b18-0548e2bb1bad</v>
+                <v>FB_Init</v>
+                <v>87b712cc-047d-4050-9ac4-7bd3c3bffc5e</v>
+                <v>FB_Reinit</v>
+                <v>b40bbddd-5912-4ec3-b0c7-682dfb867bf4</v>
+              </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" />
+              <v n="FbName">"NotImportant"</v>
+              <v n="FbGuid">{41fdc6f3-01a2-4003-aed6-440ffd11a566}</v>
+            </o>
+            <v n="VisuRegisterGvl">{67edcdbb-1c75-4543-ab54-a6aad0dc17f9}</v>
+            <n n="SettingsPou" />
+            <n n="MemManPou" />
+            <o n="InputsPou" t="GenericFbDescription">
+              <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
+                <v>abstrGetDefaultCursor</v>
+                <v>7d29a9f7-c89f-413d-96c2-3cb2a430d2c1</v>
+                <v>ExecuteDialogClosed</v>
+                <v>a6394692-066a-441d-b6a3-9e4f97aa7389</v>
+                <v>ExecuteKeyDown</v>
+                <v>93f2a72b-0c38-4de3-8272-c821bf2a23f8</v>
+                <v>ExecuteKeyUp</v>
+                <v>204bad47-44c6-4d1b-b49f-2163e37c007d</v>
+                <v>ExecuteLooseCapture</v>
+                <v>acd7e610-780e-47ed-bc14-c3624ba4c366</v>
+                <v>ExecuteMouseClick</v>
+                <v>5584922d-7b15-4f04-a43c-c70b59e553b2</v>
+                <v>ExecuteMouseDblClick</v>
+                <v>93d9c022-7742-41de-a76d-03c4ff9f59b7</v>
+                <v>ExecuteMouseDown</v>
+                <v>d83c722c-2544-483f-b09b-ae86dbd3dd0d</v>
+                <v>ExecuteMouseEnter</v>
+                <v>dd61c851-61b8-453d-b0af-8a91c3a4dada</v>
+                <v>ExecuteMouseLeave</v>
+                <v>f850fab7-0f8a-4fdf-8dce-c08399870f1b</v>
+                <v>ExecuteMouseMove</v>
+                <v>8d42d5ba-7835-4dca-b6ae-a90e0e5bd21a</v>
+                <v>ExecuteMouseUp</v>
+                <v>d93aabb8-839e-4610-900d-d13cae39045a</v>
+                <v>ExecuteValueChanged</v>
+                <v>e60a31f3-e2ce-442c-9e40-e24513524b65</v>
+                <v>GetElementInfo</v>
+                <v>392ced08-d208-408a-ad45-f8d60bdc889b</v>
+                <v>Initialize</v>
+                <v>a841e5e8-ee4b-4000-8fea-5ba5b0b62687</v>
+              </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" />
+              <v n="FbName">"NotImportant"</v>
+              <v n="FbGuid">{cecd9ac1-541d-4db7-9b5f-d9a8a00f44f7}</v>
+            </o>
+            <v n="DialogDut">{837bbd1f-9cfb-4945-83e5-e04fe84259db}</v>
+          </o>
+          <v n="LastUsedIdForIdentifier">2</v>
+          <o n="TextDocument" t="TextDocument">
+            <v n="TextBlobForSerialisation">"VAR_IN_OUT
+	PT		:TIME;
+END_VAR
+VAR_INPUT
+	Start,End,MainScale	:UDINT;
+	Label				:STRING;
+END_VAR"</v>
+            <n n="LineInfoPersistence" />
+          </o>
+          <v n="GvlCreated">false</v>
+          <n n="LMEntry" />
+          <v n="ProfileCompatibilityId">4140216668L</v>
+          <v n="LMVerMinor">0</v>
+          <v n="LMVerMajor">1</v>
+          <o n="Hotkeys" t="HotkeyConfiguration">
+            <v n="IdMin">481037385728L</v>
+            <v n="IdMax">549755813887L</v>
+            <v n="Id">481037385728L</v>
+            <v n="IdMask">549754765312L</v>
+            <v n="IdStep">1048576L</v>
+            <l2 n="Inputs" />
+          </o>
+          <o n="VisuSizeManager" t="VisualObjectSizeManager">
+            <d2 n="Size" ckt="Int32" cvt="VisualObjectSize">
+              <v>0</v>
+              <o>
+                <v n="Width">150</v>
+                <v n="Height">60</v>
+              </o>
+              <v>1</v>
+              <o>
+                <v n="Width">151</v>
+                <v n="Height">61</v>
+              </o>
+              <v>2</v>
+              <o>
+                <v n="Width">151</v>
+                <v n="Height">61</v>
+              </o>
+            </d2>
+            <v n="Version">2</v>
+          </o>
+          <n n="FrameInterfaceDataModel" />
+        </o>
+      </Data>
+      <TypeList>
+        <Type n="ArrayList">System.Collections.ArrayList</Type>
+        <Type n="BackgroundSettings">{1038f12c-dd4b-4f96-87a3-a350fe8f3552}</Type>
+        <Type n="Boolean">System.Boolean</Type>
+        <Type n="Byte">System.Byte</Type>
+        <Type n="CaseInsensitiveHashtable">{7df88604-7ac5-4e36-91c4-55e4fdad3e68}</Type>
+        <Type n="ComplexInput">{1de566f6-72a7-494c-9353-9a418172c96e}</Type>
+        <Type n="ConstantWithOptionalExpression">{be74fbbc-f60e-4118-88db-b2ee5169938e}</Type>
+        <Type n="Double">System.Double</Type>
+        <Type n="GeneratedLanguageModelEntriesData">{703465dc-4679-4ff2-bcc3-c57d0a204da3}</Type>
+        <Type n="GenericFbDescription">{40d6dd8d-dfd0-493a-8e29-c9a35e1e6539}</Type>
+        <Type n="GenericVisualElem">{f86c2928-8614-4cca-824b-e819ac4d58c4}</Type>
+        <Type n="Guid">System.Guid</Type>
+        <Type n="Hashtable">System.Collections.Hashtable</Type>
+        <Type n="HotkeyConfiguration">{6b108d46-58af-4e41-a3f4-174d8f160cc4}</Type>
+        <Type n="Int16">System.Int16</Type>
+        <Type n="Int32">System.Int32</Type>
+        <Type n="Int64">System.Int64</Type>
+        <Type n="NamedStyleColor">{fa491db2-51ff-4bc1-9cd0-ce8c94ff6216}</Type>
+        <Type n="NamedStyleFont">{9e842eb2-1463-4af2-b605-4fbb17044f94}</Type>
+        <Type n="Single">System.Single</Type>
+        <Type n="String">System.String</Type>
+        <Type n="TextDocument">{f3878285-8e4f-490b-bb1b-9acbb7eb04db}</Type>
+        <Type n="UInt16">System.UInt16</Type>
+        <Type n="UInt32">System.UInt32</Type>
+        <Type n="VisualElemCollection">{ef9d0b20-c96e-48db-b361-2ded4063150e}</Type>
+        <Type n="VisualElemList">{f285c9a3-7019-446b-b98c-ccec3a0af8fa}</Type>
+        <Type n="VisualElemMember">{c694e3a2-5c0b-4177-ab35-cb06bd5a6a02}</Type>
+        <Type n="VisualElemMemberCollection">{a4b83bea-3742-489c-9fe8-d96d68dba7ab}</Type>
+        <Type n="VisualElemMemberList">{17e26cd1-bb9b-47fe-a3d5-18fcd63b9c96}</Type>
+        <Type n="VisualObject">{f18bec89-9fef-401d-9953-2f11739a6808}</Type>
+        <Type n="VisualObjectSize">{6ad3e88f-aee2-4766-a7ea-a8790037ef51}</Type>
+        <Type n="VisualObjectSizeManager">{5f612b0e-b404-455f-8177-27864e9f5332}</Type>
+      </TypeList>
+    </XmlArchive>
+    <ObjectProperties>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="VisualProperty">
+            <v n="VisuUsageType">0</v>
+            <v n="SizeX">1024</v>
+            <v n="SizeY">768</v>
+            <v n="IsStartVisu">false</v>
+            <v n="VisuSizeMode" t="VisualVisuSizeMode">AutoDetect</v>
+            <v n="Internal">false</v>
+            <v n="DialogIsOpaque">false</v>
+            <v n="DialogIsOpaqueIsSet">false</v>
+            <v n="UseParentSizeProperties">true</v>
+            <n n="ToolboxCategory" />
+            <n n="ToolboxImageId" />
+            <v n="IsCustomCategory">false</v>
+          </o>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Int32">System.Int32</Type>
+          <Type n="VisualProperty">{477d844b-9b2a-407e-90a4-d36fd6dde2fc}</Type>
+          <Type n="VisualVisuSizeMode">{34718b76-91f6-43de-8c65-b77e0b1ee621}</Type>
+        </TypeList>
+      </XmlArchive>
+    </ObjectProperties>
+  </Visu>
+</TcPlcObject>
