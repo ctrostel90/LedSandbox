@@ -104,7 +104,7 @@
 			</SubItem>
 		</DataType>
 	</DataTypes>
-	<Instance TmcHash="{62E43736-6073-65CD-7B4C-D1D8BFD28232}">
+	<Instance TmcHash="{F0DD9789-53B5-84B9-9518-7C47DFC520A3}">
 		<Vars VarGrpType="1">
 			<Name>PlcTask Inputs</Name>
 			<Var>

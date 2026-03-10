@@ -34,10 +34,12 @@ VAR
 	displayRed		  : ITcVnDisplayableImage;
 
 	// --- Animation timing ---
-	Animate		   : BOOL := TRUE;
-	ShortredRate   : TON  := (PT := T#100MS);
-	WhiteRate	   : TON  := (PT := T#150MS);
-	BackgroundRate : TON  := (PT := T#80MS);
+	Animate			: BOOL := TRUE;
+	AddShortedLayer : BOOL := TRUE;
+	ShortredRate	: TON  := (PT := T#60MS);
+	AddWhiteLayer	: BOOL := TRUE;
+	WhiteRate		: TON  := (PT := T#150MS);
+	BackgroundRate	: TON  := (PT := T#80MS);
 
 	// --- Unwrap modes ---
 	unwraptype			: UDINT;
@@ -54,8 +56,6 @@ VAR
 	Initialized : BOOL;
 	val			: HRESULT;
 	format		: TcVnPixelFormat;
-	AddShortedLayer: BOOL;
-	AddWhiteLayer: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[_AppInfo.KeepOutputsOnBP:=TRUE;
@@ -89,7 +89,7 @@ END_IF
 ShortredRate(IN := NOT ShortredRate.Q AND Animate);
 IF ShortredRate.Q THEN
 	shortredOffset := shortredOffset + 1;
-	IF shortredOffset >= 120 THEN
+	IF shortredOffset >= 64 THEN
 		shortredOffset := 0;
 	END_IF
 
@@ -99,7 +99,7 @@ END_IF
 WhiteRate(IN := NOT WhiteRate.Q AND Animate);
 IF WhiteRate.Q THEN
 	whiteOffset := whiteOffset + 1;
-	IF whiteOffset >= 120 THEN
+	IF whiteOffset >= 64 THEN
 		whiteOffset := 0;
 	END_IF
 
