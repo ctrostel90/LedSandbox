@@ -98,7 +98,7 @@
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{C9F93E1F-331C-FC92-A8C2-B5E2E547FF61}" AutoDeleteType="true">MDP5001_260_C_I_C9F93E1F</Name>
+			<Name GUID="{C9F93E1F-331C-FC92-A8C2-B5E2E547FF61}" AutoDeleteType="true" ForceIecDecl="true">MDP5001_260_C_I_C9F93E1F</Name>
 			<BitSize>16</BitSize>
 			<SubItem>
 				<Name>Status</Name>
@@ -106,14 +106,9 @@
 				<BitSize>16</BitSize>
 				<BitOffs>0</BitOffs>
 			</SubItem>
-			<Properties>
-				<Property>
-					<Name>TcTypeSystem</Name>
-				</Property>
-			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{37E57953-D7DF-04DF-8751-B25618B20B95}" AutoDeleteType="true">MDP5001_260_I_37E57953</Name>
+			<Name GUID="{37E57953-D7DF-04DF-8751-B25618B20B95}" AutoDeleteType="true" ForceIecDecl="true">MDP5001_260_I_37E57953</Name>
 			<BitSize>16</BitSize>
 			<SubItem>
 				<Name>Status_Channel_1</Name>
@@ -123,7 +118,8 @@
 			</SubItem>
 			<Properties>
 				<Property>
-					<Name>TcTypeSystem</Name>
+					<Name>TcDataArea</Name>
+					<Value>Input</Value>
 				</Property>
 			</Properties>
 		</DataType>
@@ -553,7 +549,7 @@
 				<SlotData>0000010001001600100000001000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<ModuleIdent>2574</ModuleIdent>
-				<Module Id="#x03090004" Type="empty" Class="">
+				<Module Id="#x03090008" Type="empty" Class="">
 					<Name>SlotGroup 1 (Slot 1, 2) (1xASYNC)</Name>
 					<ImageId>549</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
@@ -565,7 +561,7 @@
 				<ModuleIdent>0</ModuleIdent>
 				<ModuleIdent>2574</ModuleIdent>
 				<ModuleIdent>526862</ModuleIdent>
-				<Module Id="#x03090005" Type="empty" Class="">
+				<Module Id="#x03090009" Type="empty" Class="">
 					<Name>SlotGroup 2 (Slot 3, 4) (EMPTY2)</Name>
 					<ImageId>550</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>
@@ -576,7 +572,7 @@
 				<SlotData>0100010001001600100000001000000000000000000000000000000000000000</SlotData>
 				<ModuleIdent>0</ModuleIdent>
 				<ModuleIdent>2574</ModuleIdent>
-				<Module Id="#x03090006" Type="empty" Class="">
+				<Module Id="#x0309000a" Type="empty" Class="">
 					<Name>SlotGroup 2 (Slot 3, 4) (EMPTY2)</Name>
 					<ImageId>550</ImageId>
 					<ModuleData>0200000000000000000004000000000000000000000000000000000000000000</ModuleData>

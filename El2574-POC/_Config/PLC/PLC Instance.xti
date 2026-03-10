@@ -20,7 +20,7 @@
 	</Instance>
 	<Mappings>
 		<OwnerA>
-			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1914)^Term 3 (EL2574)">
+			<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 1 (EK1200)^Term 3 (EL2574)">
 				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^Busy" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Busy"/>
 				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^CommandAck" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Command Acknowledge"/>
 				<Link VarA="PlcTask Inputs^MAIN.el2574_ch1.pdo.In^CommandReject" VarB="SlotGroup 1 (Slot 1, 2) (1xASYNC)^Status Channel 1^Status^Command Reject"/>
