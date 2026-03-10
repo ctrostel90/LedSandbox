@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="U_Pixel" Id="{876bdec5-0fe4-4ceb-b219-b7ad99271cd2}">
+    <Declaration><![CDATA[TYPE U_Pixel : UNION
+		Pdo	   : UDINT;
+		Colors : ST_Colors;
+	END_UNION
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

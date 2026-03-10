@@ -1,136 +1,216 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{1f58d179-ab14-432d-bc85-e201fba55584}" SpecialFunc="None">
+  <POU Name="MAIN" Id="{ec1b42ab-7513-44bb-b96c-8c8441242596}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	Test			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\grayscale_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
-	Background		   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\rainbow_gradient.png', SpriteWidth := 1000, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
-	white			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\whitealpha3_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
-	shortred			   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\shortred_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
-	MoveNext		   : BOOL;
-	MoveNext2		   : BOOL;
-	MoveBackground	   : BOOL;
-	displayImage	   : ITcVnDisplayableImage;
-	displayBackground  : ITcVnDisplayableImage;
-	displayMod1		   : ITcVnDisplayableImage;
-	displayMod2		   : ITcVnDisplayableImage;
-	Start			   : BOOL;
-	offset			   : UDINT;
-	offset2			   : UDINT;
-	backgroundOffset   : UDINT;
-	Modulator		   : Modulate;
-	ModulateBackground : Modulate;
-	Modulator2		   : Modulate;
-	MyScene			   : Scene;
-	RepeatNormal	   : RepeatUnwrap;
-	Extend			   : ExtendUnwrap;
-	val				   : HRESULT;
-	animate			   : UDINT;
-	rate			   : UDINT := 10;
-	rate2			   : UDINT := 15;
-	backgroundRate	   : UDINT := 8;
-	unwraptype		   : UDINT;
-	format			   : TcVnPixelFormat;
+	// --- Sprite source images ---
+	Red		   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\red_64x1.png', SpriteWidth := 64, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	Background : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\rainbow_gradient.png', SpriteWidth := 1000, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	white	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\whitealpha3_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	shortred   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\shortred_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 
-	//BlendMode
-	lerp				: LerpMixer;
-	weight				: LREAL := 0.5;
+	// --- Modulators (scroll/unwrap each source into a 64-pixel output) ---
+	ModulateRed		   : Modulate;
+	ModulateBackground : Modulate;
+	ShortredModulator  : Modulate;
+	WhiteModulator	   : Modulate;
+	backgroundOffset   : UDINT;
+	shortredOffset	   : UDINT;
+	whiteOffset		   : UDINT;
+	UpdateBackground   : BOOL;
+	UpdateShortred	   : BOOL;
+	UpdateWhite		   : BOOL;
+
+	// --- Scene compositor ---
+	MyScene : Scene;
+	lerp	: LerpMixer;
+	weight	: LREAL := 0.5;
+
+	// --- Displayable image handles (for scope/HMI monitoring) ---
+	SceneImage		  : ITcVnDisplayableImage;
+	displayBackground : ITcVnDisplayableImage;
+	displayShortred	  : ITcVnDisplayableImage;
+	displayWhite	  : ITcVnDisplayableImage;
+	displayRed		  : ITcVnDisplayableImage;
+
+	// --- Animation timing ---
+	Animate		   : BOOL := TRUE;
+	ShortredRate   : TON  := (PT := T#100MS);
+	WhiteRate	   : TON  := (PT := T#150MS);
+	BackgroundRate : TON  := (PT := T#80MS);
+
+	// --- Unwrap modes ---
+	unwraptype			: UDINT;
 	reflect				: ReflectUnwrap;
-	width, height, x, y : UDINT;
+	RepeatNormal		: RepeatUnwrap;
+	Extend				: ExtendUnwrap;
+	width, height, x, y : UDINT; // reflect.Sample inputs
+
+	// --- Hardware ---
+	LEDStrip   : MatrixImageSerializer(Height := 1, Width := 64, X := 0, Y := 0, FlipX := FALSE, FlipY := FALSE, Rotate := FALSE);
+	el2574_ch1 : EL2574_ExtendedMode(TotalPixels := 120);
+
+	// --- Misc ---
+	Initialized : BOOL;
+	val			: HRESULT;
+	format		: TcVnPixelFormat;
+	AddShortedLayer: BOOL;
+	AddWhiteLayer: BOOL;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF NOT test.TryLoad() OR NOT white.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() THEN
+      <ST><![CDATA[_AppInfo.KeepOutputsOnBP:=TRUE;
+
+// ============================================================
+
+// 1. LOAD GUARD — wait until all sprite sheets are ready
+// ============================================================
+IF NOT white.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() OR NOT Red.TryLoad() THEN
 	RETURN;
 END_IF
 
-IF NOT Start THEN
-	Start						 := TRUE;
+// ============================================================
+
+// 2. ONE-TIME INIT — assign unwrap mode to each modulator
+
+// ============================================================
+IF NOT Initialized THEN
+	Initialized					 := TRUE;
+	ModulateRed.Unwrapper		 := reflect;
 	ModulateBackground.Unwrapper := reflect;
-	Modulator.Unwrapper			 := reflect;
-	Modulator2.Unwrapper		 := reflect;
+	ShortredModulator.Unwrapper	 := reflect;
+	WhiteModulator.Unwrapper	 := reflect;
 END_IF
 
-IF MoveNext THEN
-	Modulator.GetImage(shortred.CurrentFrameImage,
-					   32,
-					   1,
-					   64,
-					   1,
-					   offset,
-					   0);
+// ============================================================
 
-	MoveNext := FALSE;
+// 3. ANIMATION TICK — advance offsets at each layer's own rate
+
+// ============================================================
+ShortredRate(IN := NOT ShortredRate.Q AND Animate);
+IF ShortredRate.Q THEN
+	shortredOffset := shortredOffset + 1;
+	IF shortredOffset >= 120 THEN
+		shortredOffset := 0;
+	END_IF
+
+	UpdateShortred := TRUE;
 END_IF
 
-IF MoveNext2 THEN
-	Modulator2.GetImage(White.CurrentFrameImage,
-						32,
-						1,
-						64,
-						1,
-						offset2,
-						0);
+WhiteRate(IN := NOT WhiteRate.Q AND Animate);
+IF WhiteRate.Q THEN
+	whiteOffset := whiteOffset + 1;
+	IF whiteOffset >= 120 THEN
+		whiteOffset := 0;
+	END_IF
 
-	MoveNext2 := FALSE;
+	UpdateWhite := TRUE;
 END_IF
 
-IF MoveBackGround THEN
+BackgroundRate(IN := NOT BackgroundRate.Q AND Animate);
+IF BackgroundRate.Q THEN
+	backgroundOffset := backgroundOffset + 1;
+	UpdateBackground := TRUE;
+END_IF
+
+// ============================================================
+
+// 4. MODULATE — scroll each source into a 64-pixel output frame
+
+// ============================================================
+IF UpdateBackground THEN
 	ModulateBackground.GetImage(Source		 := Background.CurrentFrameImage,
 								SourceWidth	 := 1000,
 								SourceHeight := 1,
-								OutputWidth	 := 64,
+								OutputWidth	 := 120,
 								OutputHeight := 1,
 								OffsetX		 := backgroundOffset,
 								OffsetY		 := 0);
 
-	MoveBackGround := FALSE;
+	UpdateBackground := FALSE;
 END_IF
 
-MyScene.Initalize(ModulateBackground.CurrentFrameImage);
-lerp.Weight := weight;
-MyScene.AddLayer(Modulator.CurrentFrameImage, lerp);
-MyScene.AddLayer(Modulator2.CurrentFrameImage, lerp);
-val		:= F_VN_CopyIntoDisplayableImage(MyScene.Image, displayImage, s_ok);
-val		:= F_VN_CopyIntoDisplayableImage(ModulateBackground.CurrentFrameImage, displayBackground, s_ok);
-val		:= F_VN_CopyIntoDisplayableImage(Modulator.CurrentFrameImage, displayMod1, s_ok);
-val		:= F_VN_CopyIntoDisplayableImage(Modulator2.CurrentFrameImage, displayMod2, s_ok);
-animate := animate + 1;
-IF animate MOD rate = 0 THEN
-	offset := offset + 1;
-	IF offset >= 64 THEN
-		offset := 0;
+IF UpdateShortred THEN
+	ShortredModulator.GetImage(shortred.CurrentFrameImage,
+							   32,
+							   1, // source size
+							   120,
+							   1, // output size
+							   shortredOffset,
+							   0);
+
+	UpdateShortred := FALSE;
+END_IF
+
+IF UpdateWhite THEN
+	WhiteModulator.GetImage(white.CurrentFrameImage,
+							32,
+							1, // source size
+							120,
+							1, // output size
+							whiteOffset,
+							0);
+
+	UpdateWhite := FALSE;
+END_IF
+
+// ============================================================
+
+// 5. COMPOSE SCENE — stack layers onto background with lerp blend
+
+// ============================================================
+IF NOT el2574_ch1.IsBusy THEN
+	MyScene.Initalize(ModulateBackground.CurrentFrameImage);
+	lerp.Weight := weight;
+	
+	IF AddShortedLayer THEN
+		MyScene.AddLayer(ShortredModulator.CurrentFrameImage, lerp);		
 	END_IF
 
-	MoveNext := TRUE;
-END_IF
-
-IF animate MOD rate2 = 0 THEN
-	offset2 := offset2 + 1;
-	IF offset2 >= 64 THEN
-		offset2 := 0;
+	IF AddWhiteLayer THEN
+		MyScene.AddLayer(WhiteModulator.CurrentFrameImage, lerp);		
 	END_IF
 
-	MoveNext2 := TRUE;
+	
+	//ModulateRed.GetImage(Red.CurrentFrameImage,64,1,64,1,0,0);
+	//MyScene.Initalize(ModulateRed.CurrentFrameImage);
+	
+	
+	LEDStrip.UpdateImage(MyScene.Image);
+	el2574_ch1.TrySendPixelsFromSerializer(LEDStrip);
+
+	// ============================================================
+
+	// 6. COPY TO DISPLAY — push images to HMI/scope handles
+
+	// ============================================================
+	val := F_VN_CopyIntoDisplayableImage(MyScene.Image, SceneImage, s_ok);
+	val := F_VN_CopyIntoDisplayableImage(ModulateBackground.CurrentFrameImage, displayBackground, s_ok);
+	val := F_VN_CopyIntoDisplayableImage(ShortredModulator.CurrentFrameImage, displayShortred, s_ok);
+	val := F_VN_CopyIntoDisplayableImage(WhiteModulator.CurrentFrameImage, displayWhite, s_ok);
 END_IF
 
-IF animate MOD backgroundRate = 0 THEN
-	backgroundOffset := backgroundOffset + 1;
-	MoveBackground := TRUE;
-END_IF
+// ============================================================
 
+// 7. UNWRAP MODE SELECT — override unwrapper at runtime via unwraptype
+
+// ============================================================
 CASE unwraptype OF
 	0:
-		//Modulator.Unwrapper := RepeatNormal;
-
+		// reflect (set in init, no change needed)
+		ShortredModulator.Unwrapper:=reflect;	
 	1:
-		Modulator.Unwrapper := Extend;
-
+		ShortredModulator.Unwrapper := RepeatNormal;
 	2:
+		ShortredModulator.Unwrapper := Extend;
+
+	3:
 		reflect.Sample(width,
-							height,
-							x,
-							y);
-END_CASE]]></ST>
+					   height,
+					   x,
+					   y);
+END_CASE
+
+el2574_ch1.CyclicCall();]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

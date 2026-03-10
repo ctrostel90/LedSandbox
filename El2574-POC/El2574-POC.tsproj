@@ -1305,10 +1305,13 @@
 			</Hides>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{CBEF3D7C-0C59-472D-B2E3-ACE7A0611FCA}" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{CBEF3D7C-0C59-472D-B2E3-ACE7A0611FCA}" TargetNetId="169.254.127.206.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
+			<Settings MaxCpus="8" NonWinCpus="4" RouterMemory="1073741824">
+				<Cpu CpuId="7"/>
+			</Settings>
 			<Tasks>
-				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
 			</Tasks>
@@ -1316,5 +1319,12 @@
 		<Plc>
 			<Project File="PLC.xti"/>
 		</Plc>
+		<Io>
+			<Device File="Device 1 (EtherCAT).xti" Id="1"/>
+		</Io>
+		<SymbolWatch>
+			<Variable>TIID^Device 1 (EtherCAT)^Term 1 (EK1914)^Term 3 (EL2574)^SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Execute</Variable>
+			<Variable>TIID^Device 1 (EtherCAT)^Term 1 (EK1914)^Term 3 (EL2574)^SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Update</Variable>
+		</SymbolWatch>
 	</Project>
 </TcSmProject>

@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1">
   <Task Name="PlcTask" Id="{4fca0aec-c304-457e-9bd4-d2964764901d}">
     <!--CycleTime in micro seconds.-->
-    <CycleTime>10000</CycleTime>
+    <CycleTime>1000</CycleTime>
     <Priority>20</Priority>
     <PouCall>
       <Name>MAIN</Name>
@@ -12,6 +12,5 @@
     <Fb_exit>{79194d23-297b-4efe-94f8-25097e5f878b}</Fb_exit>
     <CycleUpdate>{b281e591-1368-4e46-83d0-64d99b19e25b}</CycleUpdate>
     <PostCycleUpdate>{717c7a3a-f710-4592-9c6d-711c2f74ac65}</PostCycleUpdate>
-    <ObjectProperties />
   </Task>
 </TcPlcObject>

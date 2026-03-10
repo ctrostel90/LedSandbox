@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="EL2574_ExtendedMode" Id="{17c299d0-1620-4ec2-a0df-5d122f9c52a3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK EL2574_ExtendedMode
+VAR
+	totalPixels		 : UDINT;
+	pdo				 : ST_EL2574_ExtendedMode;
+	sendBuffer		 : ARRAY[0..MAX_PIXELS - 1] OF U_Pixel;//UDINT;
+	sendSegmentCount : USINT;
+	currentSegment	 : USINT;
+	state			 : (IDLE,
+		INITIALIZING,
+		SEND_SEGMENT,
+		TRIGGER_FRAME_SEND,
+		WAIT_FOR_FRAME_SEND_COMPLETE,
+		ERROR);
+END_VAR
+
+VAR CONSTANT
+	MAX_PIXELS : UDINT := 2048;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Constructor" Id="{e9dde36f-2f3e-418f-baba-80e598ea538d}" />
+    <Folder Name="Private" Id="{2cdc45a9-c122-4d91-a4a3-640c4b46ffd3}" />
+    <Method Name="CreateSendBufferFromSerializer" Id="{c5e9e454-cf6b-4238-a006-728f2dfbc811}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD PRIVATE CreateSendBufferFromSerializer
+VAR_INPUT
+	ImageSerializer : I_ImageSerializer;
+END_VAR
+VAR
+	currentPixel : UDINT := 0;
+	pixelReader : EL2574PixelReader;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[WHILE ImageSerializer.TryGetPixel(currentPixel, pixelReader) DO
+	sendBuffer[currentPixel].Pdo := pixelReader.ReadAsUdint();
+	currentPixel := currentPixel + 1;
+END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CyclicCall" Id="{02160b27-b43c-4d05-b124-d8397991643d}">
+      <Declaration><![CDATA[METHOD PUBLIC CyclicCall
+VAR_INPUT
+END_VAR
+VAR
+	totalSegments : UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE state OF
+	
+	IDLE : RETURN;
+	ERROR : RETURN;
+	
+	INITIALIZING :
+	
+		// initialize local variables
+		currentSegment := 0;
+		totalSegments := totalPixels / 8;
+		sendSegmentCount := UDINT_TO_USINT(totalSegments);
+	
+		// reset the card to a known state		
+		pdo.Out.Index := 0;
+		pdo.Out.Send := FALSE;
+		pdo.Out.Update := FALSE;
+		pdo.Out.Write := FALSE;
+		pdo.out.Segment[0] := 0;
+		pdo.out.Segment[1]:= 0;
+		pdo.out.Segment[2]:= 0;
+		pdo.out.Segment[3]:= 0;
+		pdo.out.Segment[4]:= 0;
+		pdo.out.Segment[5]:= 0;
+		pdo.out.Segment[6]:= 0;
+		pdo.out.Segment[7]:= 0;
+		
+		// start sending....
+		state := SEND_SEGMENT;
+
+	SEND_SEGMENT :
+		
+		pdo.Out.Index := currentSegment;
+		pdo.Out.Segment[0] := sendBuffer[currentSegment * 8 + 0].Pdo;
+		pdo.Out.Segment[1] := sendBuffer[currentSegment * 8 + 1].Pdo;
+		pdo.Out.Segment[2] := sendBuffer[currentSegment * 8 + 2].Pdo;
+		pdo.Out.Segment[3] := sendBuffer[currentSegment * 8 + 3].Pdo;
+		pdo.Out.Segment[4] := sendBuffer[currentSegment * 8 + 4].Pdo;
+		pdo.Out.Segment[5] := sendBuffer[currentSegment * 8 + 5].Pdo;
+		pdo.Out.Segment[6] := sendBuffer[currentSegment * 8 + 6].Pdo;
+		pdo.Out.Segment[7] := sendBuffer[currentSegment * 8 + 7].Pdo;
+		pdo.Out.Write := TRUE;
+		pdo.Out.Execute := NOT pdo.Out.Execute;
+				
+		
+		IF currentSegment = sendSegmentCount THEN
+			state := TRIGGER_FRAME_SEND;
+		ELSE
+			currentSegment := currentSegment + 1;
+		END_IF
+		
+	TRIGGER_FRAME_SEND : 
+			
+		pdo.Out.Write := FALSE;
+		pdo.Out.Update := TRUE;
+		pdo.Out.Send := TRUE;
+		pdo.Out.Execute := NOT pdo.Out.Execute;	
+		
+		state := WAIT_FOR_FRAME_SEND_COMPLETE;
+		
+	WAIT_FOR_FRAME_SEND_COMPLETE:
+	
+		IF NOT pdo.In.Busy THEN
+			pdo.out.Update := FALSE;
+			pdo.out.Send := FALSE;
+			state := IDLE;
+		END_IF
+
+		
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{32bc4bc8-d00c-46e1-945e-db6896309f6e}" FolderPath="Constructor\">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	TotalPixels : UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[This^.totalPixels := TotalPixels;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="HasError" Id="{8acd112e-f0c0-40d0-a854-e2df53949864}">
+      <Declaration><![CDATA[PROPERTY PUBLIC HasError : BOOL]]></Declaration>
+      <Get Name="Get" Id="{38035eb0-68c1-45ab-a45f-660f75d215bf}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[HasError := state = Error;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="IsBusy" Id="{13cc40cb-795f-4243-8647-a2be481b7971}">
+      <Declaration><![CDATA[PROPERTY PUBLIC IsBusy : BOOL]]></Declaration>
+      <Get Name="Get" Id="{cf86f569-b3d9-4d85-b515-1af5d460602d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IsBusy := not(state = IDLE or_else state = ERROR);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="ResetSendBuffer" Id="{0b62e864-67c6-4258-8c8f-460dbb63f024}" FolderPath="Private\">
+      <Declaration><![CDATA[METHOD PRIVATE ResetSendBuffer
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[memset(ADR(sendBuffer), 0,SIZEOF(sendBuffer));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TrySendClearAll" Id="{8154dbc8-2940-45e7-9ac4-ff20e88189f6}">
+      <Declaration><![CDATA[METHOD PUBLIC TrySendClearAll : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF IsBusy THEN 
+	RETURN;
+END_IF
+
+state := INITIALIZING;
+
+ResetSendBuffer();
+TrySendClearAll := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TrySendPixelsFromSerializer" Id="{4284f2bf-e030-4882-be34-703ce1d66ede}">
+      <Declaration><![CDATA[METHOD PUBLIC TrySendPixelsFromSerializer : BOOL
+VAR_INPUT
+	ImageSerializer : I_ImageSerializer;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF IsBusy THEN 
+	RETURN;
+END_IF
+
+IF ImageSerializer.GetTotalSerializablePixelCount() > totalPixels THEN 
+	RETURN;
+END_IF
+
+state := INITIALIZING;
+
+ResetSendBuffer();
+CreateSendBufferFromSerializer(ImageSerializer);
+TrySendPixelsFromSerializer := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

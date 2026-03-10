@@ -24,6 +24,36 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\debug\CheckBounds.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_ExtendedMode.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_In.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\DUT\ST_EL2574_Out.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\EL2574_ExtendedMode.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\EL2574\I_EL2574_CommandMode.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Base\ImageSerializer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Interfaces\I_ImageSerializer.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Matrix\MatrixImageSerializer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ImageSerializer\Null\NullImageSerializer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\Library\Animation\I_Animation.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -48,6 +78,15 @@
     <Compile Include="Source\Library\Scene\Scene.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\PixelReader\EL2574PixelReader.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\PixelReader\I_PixelReader.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\ST_Colors.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\Unwrappers\I_Unwrapper.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -60,14 +99,26 @@
     <Compile Include="Source\Unwrappers\ReflectUnwrap.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\U_Pixel.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="Source\EL2574" />
+    <Folder Include="Source\EL2574\DUT" />
+    <Folder Include="Source\ImageSerializer" />
+    <Folder Include="Source\ImageSerializer\Base" />
+    <Folder Include="Source\ImageSerializer\Interfaces" />
+    <Folder Include="Source\ImageSerializer\Matrix" />
+    <Folder Include="Source\ImageSerializer\Null" />
     <Folder Include="Source\Library" />
     <Folder Include="Source\Library\Animation" />
     <Folder Include="Source\Library\BlendModes" />
     <Folder Include="Source\Library\Scene" />
+    <Folder Include="Source\debug" />
+    <Folder Include="Source\PixelReader" />
     <Folder Include="Source\Unwrappers" />
     <Folder Include="VISUs" />
     <Folder Include="Source" />
@@ -100,8 +151,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -177,14 +228,14 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>
