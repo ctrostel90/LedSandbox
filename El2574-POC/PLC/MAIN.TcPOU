@@ -4,27 +4,35 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	// --- Sprite source images ---
+	Black	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\black_64x1.png', SpriteWidth := 64, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 	Red		   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\red_64x1.png', SpriteWidth := 64, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	Blue	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\blue_64x1.png', SpriteWidth := 64, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
+	Green	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\green_64x1.png', SpriteWidth := 64, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 	Background : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\rainbow_gradient.png', SpriteWidth := 1000, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 	white	   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\whitealpha3_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 	shortred   : SpriteSheetAnimationFrames(SpriteSheetFilePath := 'C:\temp\images\shortred_32_32.png', SpriteWidth := 32, SpriteHeight := 1, TotalSprites := 1, Columns := 1, Rows := 1);
 
 	// --- Modulators (scroll/unwrap each source into a 64-pixel output) ---
-	ModulateRed		   : Modulate;
 	ModulateBackground : Modulate;
 	ShortredModulator  : Modulate;
 	WhiteModulator	   : Modulate;
 	backgroundOffset   : UDINT;
 	shortredOffset	   : UDINT;
 	whiteOffset		   : UDINT;
+	redOffset		   : UDINT;
+	blueOffset		   : UDINT;
+	greenOffset		   : UDINT;
 	UpdateBackground   : BOOL;
 	UpdateShortred	   : BOOL;
 	UpdateWhite		   : BOOL;
+	UpdateRed		   : BOOL;
+	UpdateBlue		   : BOOL;
+	UpdateGreen		   : BOOL;
 
 	// --- Scene compositor ---
 	MyScene : Scene;
 	lerp	: LerpMixer;
-	weight	: LREAL := 0.5;
+	weight	: LREAL := 0.85;
 
 	// --- Displayable image handles (for scope/HMI monitoring) ---
 	SceneImage		  : ITcVnDisplayableImage;
@@ -32,14 +40,21 @@ VAR
 	displayShortred	  : ITcVnDisplayableImage;
 	displayWhite	  : ITcVnDisplayableImage;
 	displayRed		  : ITcVnDisplayableImage;
+	displayBlue		  : ITcVnDisplayableImage;
+	displayGreen	  : ITcVnDisplayableImage;
 
 	// --- Animation timing ---
 	Animate			: BOOL := TRUE;
+	AddBlackLayer	: BOOL := FALSE;
+	AddBackground	: BOOL := TRUE;
+	BackgroundRate	: TON  := (PT := T#80MS);
 	AddShortedLayer : BOOL := TRUE;
-	ShortredRate	: TON  := (PT := T#60MS);
+	ShortredRate	: TON  := (PT := T#50MS);
 	AddWhiteLayer	: BOOL := TRUE;
 	WhiteRate		: TON  := (PT := T#150MS);
-	BackgroundRate	: TON  := (PT := T#80MS);
+	AddRedLayer		: BOOL := FALSE;
+	AddBlueLayer	: BOOL := FALSE;
+	AddGreenLayer	: BOOL := FALSE;
 
 	// --- Unwrap modes ---
 	unwraptype			: UDINT;
@@ -58,13 +73,13 @@ VAR
 	format		: TcVnPixelFormat;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[_AppInfo.KeepOutputsOnBP:=TRUE;
-
+      <ST><![CDATA[_AppInfo.KeepOutputsOnBP := TRUE;
 // ============================================================
 
 // 1. LOAD GUARD — wait until all sprite sheets are ready
+
 // ============================================================
-IF NOT white.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() OR NOT Red.TryLoad() THEN
+IF NOT Black.TryLoad() OR NOT Background.TryLoad() OR NOT shortred.TryLoad() OR NOT white.TryLoad() OR NOT Red.TryLoad() OR NOT Blue.TryLoad() OR NOT Green.TryLoad() THEN
 	RETURN;
 END_IF
 
@@ -75,7 +90,6 @@ END_IF
 // ============================================================
 IF NOT Initialized THEN
 	Initialized					 := TRUE;
-	ModulateRed.Unwrapper		 := reflect;
 	ModulateBackground.Unwrapper := reflect;
 	ShortredModulator.Unwrapper	 := reflect;
 	WhiteModulator.Unwrapper	 := reflect;
@@ -159,22 +173,35 @@ END_IF
 
 // ============================================================
 IF NOT el2574_ch1.IsBusy THEN
-	MyScene.Initalize(ModulateBackground.CurrentFrameImage);
+	IF AddBlackLayer THEN
+		MyScene.Initalize(Black.CurrentFrameImage);
+	END_IF
+
+	IF AddBackground THEN
+		MyScene.Initalize(ModulateBackground.CurrentFrameImage);
+	END_IF
+
 	lerp.Weight := weight;
-	
 	IF AddShortedLayer THEN
-		MyScene.AddLayer(ShortredModulator.CurrentFrameImage, lerp);		
+		MyScene.AddLayer(ShortredModulator.CurrentFrameImage, lerp);
 	END_IF
 
 	IF AddWhiteLayer THEN
-		MyScene.AddLayer(WhiteModulator.CurrentFrameImage, lerp);		
+		MyScene.AddLayer(WhiteModulator.CurrentFrameImage, lerp);
 	END_IF
 
-	
-	//ModulateRed.GetImage(Red.CurrentFrameImage,64,1,64,1,0,0);
-	//MyScene.Initalize(ModulateRed.CurrentFrameImage);
-	
-	
+	IF AddRedLayer THEN
+		MyScene.AddLayer(Red.CurrentFrameImage, lerp);
+	END_IF
+
+	IF AddBlueLayer THEN
+		MyScene.AddLayer(Blue.CurrentFrameImage, lerp);
+	END_IF
+
+	IF AddGreenLayer THEN
+		MyScene.AddLayer(Green.CurrentFrameImage, lerp);
+	END_IF
+
 	LEDStrip.UpdateImage(MyScene.Image);
 	el2574_ch1.TrySendPixelsFromSerializer(LEDStrip);
 
@@ -197,9 +224,11 @@ END_IF
 CASE unwraptype OF
 	0:
 		// reflect (set in init, no change needed)
-		ShortredModulator.Unwrapper:=reflect;	
+		ShortredModulator.Unwrapper := reflect;
+
 	1:
 		ShortredModulator.Unwrapper := RepeatNormal;
+
 	2:
 		ShortredModulator.Unwrapper := Extend;
 

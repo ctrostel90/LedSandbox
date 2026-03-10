@@ -1327,4 +1327,7 @@
 			<Variable>TIID^Device 1 (EtherCAT)^Term 1 (EK1914)^Term 3 (EL2574)^SlotGroup 1 (Slot 1, 2) (1xASYNC)^Extended Channel 1^Extended Control^Update</Variable>
 		</SymbolWatch>
 	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
+	</Mappings>
 </TcSmProject>

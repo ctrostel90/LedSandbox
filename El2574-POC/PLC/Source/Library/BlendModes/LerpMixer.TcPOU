@@ -46,7 +46,9 @@ FOR x := 0 TO ImageOneWidth - 1 DO
 					  nX		 := x,
 					  nY		 := y,
 					  hrPrev	 := s_OK);
-		newWeight := topPixel[3] / 255.0;
+		//newWeight := topPixel[3] / 255.0;
+		 newWeight := (_Weight) * (topPixel[3] / 255.0);
+		 
 		newPixel[0] := (topPixel[0] * newWeight) + (bottomPixel[0] * (1.0 - newWeight));
 		newPixel[1] := (topPixel[1] * newWeight) + (bottomPixel[1] * (1.0 - newWeight));
 		newPixel[2] := (topPixel[2] * newWeight) + (bottomPixel[2] * (1.0 - newWeight));  
